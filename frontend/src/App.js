@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 import "./App.css";
+import Navbar from "./components/layout/Navbar";
+import Portfolio from "./pages/Portfolio";
+import Home from "./pages/Home";
+import Submit from "./pages/Submit";
 
 export const getHelloMessage = async () => {
   try {
@@ -12,25 +17,37 @@ export const getHelloMessage = async () => {
   }
 };
 
+// routes
+const Routes = () => {
+  return useRoutes([
+    { path: "/home", element: <Home /> },
+    { path: "/portfolio", element: <Portfolio /> },
+    { path: "/submit", element: <Submit /> },
+  ]);
+};
+
 function App() {
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const fetchMessage = async () => {
-      try {
-        const helloMessage = await getHelloMessage();
-        setMessage(helloMessage);
-      } catch (error) {
-        console.error("Error fetching hello message:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchMessage = async () => {
+  //     try {
+  //       const helloMessage = await getHelloMessage();
+  //       setMessage(helloMessage);
+  //     } catch (error) {
+  //       console.error("Error fetching hello message:", error);
+  //     }
+  //   };
 
-    fetchMessage();
-  }, []);
+  //   fetchMessage();
+  // }, []);
 
   return (
     <div>
-      <p> {message}</p>
+      <Navbar />
+      <Router>
+        <Routes />
+      </Router>
     </div>
   );
 }

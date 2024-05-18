@@ -1,0 +1,52 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  margin: 40px 30px;
+  background-color: #f9f2e9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+
+  .logo {
+    font-family: "Knewave", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2rem;
+    color: #3d314a;
+  }
+
+  ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin: 0 25px;
+
+      a {
+        text-decoration: none;
+        color: #3d314a;
+        font-size: 1rem;
+
+        &:hover {
+          color: #a55057;
+        }
+      }
+    }
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+
+    .profile_pic {
+      img {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+}
