@@ -1,8 +1,12 @@
+import Post from "../components/home/Post";
+import UserProfile from "../components/portfolio/UserProfile";
+
 export default function Portfolio() {
   return (
     <div>
-      <h1>Portfolio</h1>
-      <p>Welcome to the Portfolio platform!</p>
+      <UserProfile />
+      <Post portfolio={true}/>
+      <Post portfolio={true}/>
     </div>
   );
 }
