@@ -5,7 +5,7 @@ import artImage from "../../assets/images/art.png";
 import upvote from "../../assets/icons/upvote.svg";
 import downvote from "../../assets/icons/downvote.svg";
 
-const Post = () => {
+const Post = ({ portfolio }) => {
   let [follow, setFollow] = useState(false);
   let [followText, setFollowText] = useState("Follow");
   const handleFollow = () => {
@@ -34,17 +34,18 @@ const Post = () => {
             <span className="user-handle">@fabledfariha</span>
           </div>
         </div>
-
-        <button
-          className="follow-button"
-          onClick={handleFollow}
-          style={{
-            backgroundColor: follow ? "#a55057" : null,
-            color: follow ? "#fff" : null,
-          }}
-        >
-          {followText}
-        </button>
+        {!portfolio && (
+          <button
+            className="follow-button"
+            onClick={handleFollow}
+            style={{
+              backgroundColor: follow ? "#a55057" : null,
+              color: follow ? "#fff" : null,
+            }}
+          >
+            {followText}
+          </button>
+        )}
       </div>
       <img src={artImage} alt="Art" className="post__art-image" />
       <div className="post__footer">

@@ -11,6 +11,7 @@ body {
   padding: 0px 30px;
 }
 
-span {
+span,
+p {
   font-family: "Montserrat", sans-serif;
 }
