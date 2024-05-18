@@ -4,7 +4,12 @@ import {
   useLogoutFunction,
 } from "@propelauth/react";
 
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 const Auth = withAuthInfo((props) => {
+  const navigate = useNavigate();
+
   const logoutFunction = useLogoutFunction();
   const { redirectToLoginPage, redirectToSignupPage, redirectToAccountPage } =
     useRedirectFunctions();
@@ -12,8 +17,10 @@ const Auth = withAuthInfo((props) => {
   // const { getLoginPageUrl, getSignupPageUrl, getAccountPageUrl } = useHostedPageUrls()
 
   if (props.isLoggedIn) {
+    navigate("/home");
     return (
       <div>
+        window.location.href = "http://localhost:3000/home"
         <p>You are logged in as {props.user.email}</p>
         <button onClick={() => redirectToAccountPage()}>Account</button>
         <button onClick={() => logoutFunction(true)}>Logout</button>

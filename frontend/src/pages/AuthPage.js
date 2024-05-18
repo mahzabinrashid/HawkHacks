@@ -2,8 +2,6 @@ import Auth from "../components/Auth";
 import React, { useState, useEffect } from "react";
 
 export default function AuthPage() {
-    console.log("Testing")
-    console.log(`${process.env.REACT_APP_NEURELO_API_KEY}`);
     useEffect(() => {
       // Define the async function for fetching data
       const fetchData = async () => {

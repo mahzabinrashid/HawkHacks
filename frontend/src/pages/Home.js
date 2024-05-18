@@ -1,38 +1,12 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import Auth from "../components/Auth";
+import "./Home.scss";
 
-export const getHelloMessage = async () => {
-  try {
-    const response = await axios.get("http://localhost:8080/api");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching hello message:", error);
-    throw error;
-  }
-};
-
-function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    const fetchMessage = async () => {
-      try {
-        const helloMessage = await getHelloMessage();
-        setMessage(helloMessage);
-      } catch (error) {
-        console.error("Error fetching hello message:", error);
-      }
-    };
-
-    fetchMessage();
-  }, []);
-
+import Post from "../components/home/Post";
+export default function Home() {
   return (
-    <div>
-      <p> {message}</p>
+    <div className="home">
+      <Post />
+      <Post />
+      <Post />
     </div>
   );
 }
-
-export default App;
