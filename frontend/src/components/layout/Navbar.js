@@ -51,6 +51,9 @@ const Navbar = withAuthInfo((props) => {
             <a href="/apply">Apply</a>
           </li>
           <li className="navbar__item">
+            <a href="/leaderboard">Leaderboard</a>
+          </li>
+          <li className="navbar__item">
             <a href="/submit">Submit</a>
           </li>
           <li className="navbar__item">

@@ -1,5 +1,4 @@
 import AuthPage from "./pages/AuthPage";
-import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   BrowserRouter as Router,
@@ -12,6 +11,7 @@ import Portfolio from "./pages/Portfolio";
 import Submit from "./pages/Submit";
 import Home from "./pages/Home";
 import Apply from "./pages/Apply";
+import Leaderboard from "./pages/Leaderboard";
 
 export const getHelloMessage = async () => {
   try {
@@ -30,6 +30,7 @@ const Routes = () => {
     { path: "/portfolio", element: <Portfolio /> },
     { path: "/submit", element: <Submit /> },
     { path: "/apply", element: <Apply /> },
+    {path: "/leaderboard", element: <Leaderboard />},
     { path: "/", element: <AuthPage /> },
   ]);
 };

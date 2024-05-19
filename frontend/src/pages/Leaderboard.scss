@@ -1,0 +1,53 @@
+.leaderboard {
+  border-radius: 8px;
+
+  padding: 0px 100px;
+  margin: auto;
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #19123c;
+    color: #fff;
+    padding: 20px 30px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 40px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      font-size: 1em;
+      color: #333;
+    }
+  }
+
+  &-username {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .leaderboard-name {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .leaderboard-handle {
+      color: #888;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+  }
+}
