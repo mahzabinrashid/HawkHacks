@@ -29,8 +29,10 @@ const Post = ({ portfolio, post }) => {
             className="post__profile-image"
           />
           <div className="user-info">
-            <span className="user-name">{post.name}</span>
-            <span className="user-handle">{post.posts[0].competition}</span>
+            {post && <span className="user-name">{post.name}</span>}
+            {post.posts[0].competition && (
+              <span className="user-handle">{post.posts[0].competition}</span>
+            )}
           </div>
         </div>
         {!portfolio && (

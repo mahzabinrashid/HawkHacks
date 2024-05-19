@@ -14,6 +14,7 @@ import {
   useRedirectFunctions,
   useLogoutFunction,
 } from "@propelauth/react";
+import { createClient } from "@supabase/supabase-js";
 
 const Submit = withAuthInfo((props) => {
   const navigate = useNavigate();
@@ -25,6 +26,10 @@ const Submit = withAuthInfo((props) => {
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
   const [probability, setProbability] = useState(null);
+
+  const supabaseUrl = "https://nxhutppbcnufqxtmqyyl.supabase.co";
+  const supabaseKey = process.env.REACT_APP_SUPABASE;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   const handleFileUpload = (newFile) => {
     setFile(newFile);
@@ -105,6 +110,21 @@ const Submit = withAuthInfo((props) => {
   };
 
   const submitToBackend = async () => {
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `public/${fileName}`;
+    let { error: uploadError } = await supabase.storage
+      .from("images")
+      .upload(filePath, file);
+    if (uploadError) {
+      throw uploadError;
+    }
+    const { data: publicUrlData, error: urlError } = supabase.storage
+      .from("images")
+      .getPublicUrl(filePath);
+    if (urlError) {
+      throw urlError;
+    }
     const formData = {
       name: username,
       posts: {
@@ -113,7 +133,7 @@ const Submit = withAuthInfo((props) => {
             artwork: artworkName,
             description: description,
             competition: competition,
-            image: image,
+            image: publicUrlData.publicUrl,
           },
         ],
       },
@@ -151,6 +171,7 @@ const Submit = withAuthInfo((props) => {
         setUserImage(result.data[0].posts[0].image);
         userImage = result.data[0].posts[0].image;
         userID = result.data[0].id;
+        console.log(userID);
       } catch (error) {
         // Set the error to the state
         console.log(error.message);
@@ -158,6 +179,7 @@ const Submit = withAuthInfo((props) => {
     };
     await fetchData();
     const patchData = async () => {
+      console.log(userID);
       try {
         const response = await fetch(
           `https://us-east-2.aws.neurelo.com/rest/users/${userID}`,
