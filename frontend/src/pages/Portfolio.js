@@ -1,5 +1,6 @@
 import Post from "../components/home/Post";
 import UserProfile from "../components/portfolio/UserProfile";
+import "./Portfolio.scss"
 import {
   withAuthInfo,
   useRedirectFunctions,
@@ -64,7 +65,7 @@ const Portfolio = withAuthInfo((props) => {
   }
 
   return (
-    <div>
+    <div className="portfolio">
       {userData ? (
         <>
           <UserProfile user={userData} />
