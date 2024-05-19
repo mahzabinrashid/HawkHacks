@@ -7,6 +7,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { MuiFileInput } from "mui-file-input";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import axios from "axios";
 
 export default function Submit() {
   const [competition, setCompetition] = useState("");
@@ -43,20 +44,33 @@ export default function Submit() {
   };
 
   const handleSubmit = () => {
-    const formData = {
-      username,
-      artworkName,
-      description,
-      competition,
-      file,
-    };
-    console.log(formData);
+    const formData = new FormData();
+    formData.append("media", file);
+    formData.append("models", "genai");
+    formData.append("api_user", "794355209");
+    formData.append("api_secret", process.env.REACT_APP_SIGHTENGINE_API_SECRET);
+
+    axios
+      .post("https://api.sightengine.com/1.0/check.json", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(function (response) {
+        // on success: handle response
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        if (error.response) console.log(error.response.data);
+        else console.log(error.message);
+      });
   };
 
   return (
     <div className="submit">
       <div className="submit_box">
-        <h1>Apply and Win Prizes and Opportunities!</h1>
+        <h1>Apply to Win Prizes and Opportunities!</h1>
         <TextField
           id="outlined-basic"
           label="Your name"
@@ -115,7 +129,9 @@ export default function Submit() {
           getInputText={(value) => (value ? "Thanks!" : "")}
         />
         {image && <img src={image} alt="Art" className="post__art-image" />}
-        <button className="submit_button" onClick={handleSubmit}>Submit</button>
+        <button className="submit_button" onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
     </div>
   );
