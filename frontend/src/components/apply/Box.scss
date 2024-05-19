@@ -1,10 +1,24 @@
 .box {
-  background-color: #fef4e1;
-  border-radius: 8px;
+  background-color: #fbeedd;
+  border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px 30px;
+  padding: 20px;
   max-width: 500px;
   margin: 15px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  &__content {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #faf0e5;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 0px 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
   &__header {
     display: flex;
@@ -26,18 +40,20 @@
   }
 
   &__company {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: bold;
-    margin: 0;
+    margin: 20px 0px;
   }
 
   &__description {
     margin: 8px 0;
+    font-size: 0.9em;
+    margin-bottom: 20px;
   }
 
   &__date {
     color: #666;
-    font-size: 0.9em;
+    font-size: 0.8em;
   }
 
   &__footer {
@@ -45,20 +61,20 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 16px;
+    width: 100%;
   }
 
   &__reward {
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-weight: bold;
   }
 
   &__apply-button {
-    background-color: #3d314a;
-    color: #fff;
-
+    background-color: transparent;
+    color: #000;
     border: 2px solid #3d314a;
     border-radius: 10px;
-    padding: 5px 30px;
+    padding: 5px 20px;
     font-size: 0.9rem;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
@@ -66,7 +82,7 @@
   }
 
   &__apply-button:hover {
-    background-color: transparent;
-    color: #000;
+    background-color: #3d314a;
+    color: #fff;
   }
 }
