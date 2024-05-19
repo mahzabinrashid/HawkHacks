@@ -21,7 +21,6 @@ const Submit = withAuthInfo((props) => {
   const [competition, setCompetition] = useState("");
   const [file, setFile] = useState(null);
   const [image, setImage] = useState("");
-  const [userImage, setUserImage] = useState(null);
   const [artworkName, setArtworkName] = useState("");
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
@@ -100,7 +99,7 @@ const Submit = withAuthInfo((props) => {
           return; // Skip the backend submission
         } else {
           await submitToBackend();
-          navigate("/home");
+          // navigate("/home");
         }
       } catch (error) {
         if (error.response) console.log(error.response.data);
@@ -140,65 +139,117 @@ const Submit = withAuthInfo((props) => {
     };
 
     let userID = "";
-    let userImage = "";
 
-    const fetchData = async () => {
-      try {
-        // Make the GET request
-        const filter = JSON.stringify({ email: props.user.email });
-        const response = await fetch(
-          `https://us-east-2.aws.neurelo.com/rest/users?filter=${encodeURIComponent(
-            filter
-          )}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
-            },
-          }
-        );
-        // Check if the response is ok (status code 200-299)
-        if (!response.ok) {
-          console.log(response);
-          throw new Error("Network response was not ok");
+    // const fetchData = async () => {
+    //   try {
+    //     // Make the GET request
+    //     const filter = JSON.stringify({ email: props.user.email });
+    //     const response = await fetch(
+    //       `https://us-east-2.aws.neurelo.com/rest/users?filter=${encodeURIComponent(
+    //         filter
+    //       )}`,
+    //       {
+    //         method: "GET",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
+    //         },
+    //       }
+    //     );
+    //     // Check if the response is ok (status code 200-299)
+    //     if (!response.ok) {
+    //       console.log(response);
+    //       throw new Error("Network response was not ok");
+    //     }
+    //     // Parse the JSON from the response
+    //     const result = await response.json();
+    //     // Set the fetched data to the state
+    //     console.log(result);
+    //     userID = result.data[0].id;
+    //     console.log(userID);
+    //   }
+    //   catch (error) {
+    //     // Set the error to the state
+    //     console.log(error.message);
+    //   }
+    // };
+    // await fetchData();
+    // const patchData = async () => {
+    //   console.log(userID);
+    //   try {
+    //     const response = await fetch(
+    //       `https://us-east-2.aws.neurelo.com/rest/users/${userID}`,
+    //       {
+    //         method: "PATCH",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
+    //         },
+    //         body: JSON.stringify(formData),
+    //       }
+    //     );
+    //     const result = await response.json();
+    //     console.log(result);
+    //   } catch (error) {
+    //     console.log(error.message);
+    //   }
+    // };
+    // await patchData();
+    const fetchData = async() => {
+      return fetch(
+        `https://us-east-2.aws.neurelo.com/rest/users?filter=${encodeURIComponent(
+          JSON.stringify({ email: props.user.email })
+        )}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
+          },
         }
-        // Parse the JSON from the response
-        const result = await response.json();
-        // Set the fetched data to the state
-        console.log(result);
-        console.log(result.data[0].posts[0].image);
-        setUserImage(result.data[0].posts[0].image);
-        userImage = result.data[0].posts[0].image;
-        userID = result.data[0].id;
-        console.log(userID);
-      } catch (error) {
-        // Set the error to the state
-        console.log(error.message);
-      }
-    };
-    await fetchData();
-    const patchData = async () => {
-      console.log(userID);
-      try {
-        const response = await fetch(
-          `https://us-east-2.aws.neurelo.com/rest/users/${userID}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
-            },
-            body: JSON.stringify(formData),
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
           }
-        );
-        const result = await response.json();
-        console.log(result);
-      } catch (error) {
-        console.log(error.message);
-      }
+          return response.json();
+        })
+        .then((result) => {
+          console.log(result);
+          return result.data[0].id;
+        })
+        .catch((error) => {
+          console.log(error.message);
+          throw error; // Rethrow the error to handle it in the calling function
+        });
     };
-    await patchData();
+
+    const patchData = async(userID) => {
+      console.log(userID);
+      return fetch(`https://us-east-2.aws.neurelo.com/rest/users/${userID}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    };
+
+    fetchData()
+      .then((userID) => patchData(userID))
+      .catch((error) => {
+        console.log("Error in fetchData or patchData:", error.message);
+      });
   };
 
   return (
@@ -265,7 +316,7 @@ const Submit = withAuthInfo((props) => {
           }}
           getInputText={(value) => (value ? "Thanks!" : "")}
         />
-        {/* {image && <img src={image} alt="Art" className="post__art-image" />} */}
+        {image && <img src={image} alt="Art" className="post__art-image" />}
         <button className="submit_button" onClick={handleSubmit}>
           Submit
         </button>
