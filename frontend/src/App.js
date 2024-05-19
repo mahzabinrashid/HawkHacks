@@ -11,6 +11,7 @@ import Navbar from "./components/layout/Navbar";
 import Portfolio from "./pages/Portfolio";
 import Submit from "./pages/Submit";
 import Home from "./pages/Home";
+import Apply from "./pages/Apply";
 
 export const getHelloMessage = async () => {
   try {
@@ -28,6 +29,7 @@ const Routes = () => {
     { path: "/home", element: <Home /> },
     { path: "/portfolio", element: <Portfolio /> },
     { path: "/submit", element: <Submit /> },
+    { path: "/apply", element: <Apply /> },
     { path: "/", element: <AuthPage /> },
   ]);
 };

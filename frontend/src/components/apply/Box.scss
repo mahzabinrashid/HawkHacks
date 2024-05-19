@@ -1,0 +1,72 @@
+.box {
+  background-color: #fef4e1;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 30px;
+  max-width: 500px;
+  margin: 15px auto;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  &__logo {
+    height: 40px;
+  }
+
+  &__bookmark {
+    height: 30px;
+  }
+
+  &__body {
+    text-align: left;
+  }
+
+  &__company {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  &__description {
+    margin: 8px 0;
+  }
+
+  &__date {
+    color: #666;
+    font-size: 0.9em;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+  }
+
+  &__reward {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  &__apply-button {
+    background-color: #3d314a;
+    color: #fff;
+
+    border: 2px solid #3d314a;
+    border-radius: 10px;
+    padding: 5px 30px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+  }
+
+  &__apply-button:hover {
+    background-color: transparent;
+    color: #000;
+  }
+}
