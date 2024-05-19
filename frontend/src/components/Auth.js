@@ -3,7 +3,7 @@ import {
   useRedirectFunctions,
   useLogoutFunction,
 } from "@propelauth/react";
-
+import "./Auth.scss";
 import { useNavigate } from "react-router-dom";
 
 const Auth = withAuthInfo((props) => {
@@ -19,10 +19,19 @@ const Auth = withAuthInfo((props) => {
     window.location.href = "/home";
   } else {
     return (
-      <div>
-        <p>You are not logged in</p>
-        <button onClick={() => redirectToLoginPage()}>Login</button>
-        <button onClick={() => redirectToSignupPage()}>Signup</button>
+      <div className="auth">
+        <div className="auth_container">
+          <h1>BRSH</h1>
+          <p>Create . Compete . Conquer</p>
+          <div className="button_container">
+            <button className="sign_up" onClick={() => redirectToSignupPage()}>
+              Sign Up
+            </button>
+            <button className="sign_in" onClick={() => redirectToLoginPage()}>
+              Sign In
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,17 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Knewave&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 
 body {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-
   background: linear-gradient(0deg, #fff7eb 0%, #f9e1c3 69%);
   padding: 0px 30px;
 }
 
 span,
-p {
+p,
+button {
   font-family: "Montserrat", sans-serif;
 }

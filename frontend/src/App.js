@@ -1,7 +1,11 @@
 import AuthPage from "./pages/AuthPage";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, useRoutes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  useRoutes,
+  useLocation,
+} from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layout/Navbar";
 import Portfolio from "./pages/Portfolio";
@@ -24,33 +28,25 @@ const Routes = () => {
     { path: "/home", element: <Home /> },
     { path: "/portfolio", element: <Portfolio /> },
     { path: "/submit", element: <Submit /> },
-    { path: "/", element: <AuthPage />}
+    { path: "/", element: <AuthPage /> },
   ]);
 };
 
-function App() {
-  // const [message, setMessage] = useState("");
-
-  // useEffect(() => {
-  //   const fetchMessage = async () => {
-  //     try {
-  //       const helloMessage = await getHelloMessage();
-  //       setMessage(helloMessage);
-  //     } catch (error) {
-  //       console.error("Error fetching hello message:", error);
-  //     }
-  //   };
-
-  //   fetchMessage();
-  // }, []);
-
+const AppContent = () => {
+  const location = useLocation();
   return (
-    <div>
-      <Navbar />
-      <Router>
-        <Routes />
-      </Router>
-    </div>
+    <>
+      {location.pathname !== "/" && <Navbar />}
+      <Routes />
+    </>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 

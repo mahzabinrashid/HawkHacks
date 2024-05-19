@@ -1,0 +1,85 @@
+.auth {
+  margin: 0;
+  padding: 0;
+  background: url("../assets/images/landing.png") no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  margin: -16px -38px;
+  .auth_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    h1 {
+      font-family: "Knewave", system-ui;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 5rem;
+      color: #3d314a;
+      margin: 0px;
+    }
+    p {
+      font-family: "Dancing Script", cursive;
+      font-optical-sizing: auto;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .sign_up {
+      margin-right: 20px;
+      background-color: transparent;
+      color: #0e0b37;
+      border: 2px solid #0e0b37;
+      border-radius: 30px;
+      padding: 10px 30px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+
+      &:hover {
+        background-color: #f0f0f0;
+        transform: scale(1.05);
+      }
+
+      &:active {
+        background-color: #e0e0e0;
+        transform: scale(1);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .sign_in {
+      background-color: #0e0b37; // Dark blue color for the button background
+      color: #f0f0f0; // Light color for the text
+      border: none; // No border
+      border-radius: 30px; // Rounded corners
+      padding: 10px 30px; // Padding for the button
+      font-size: 18px; // Font size for the text
+      font-weight: 600; // Font weight for the text
+      cursor: pointer; // Pointer cursor on hover
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
+      transition: background-color 0.3s, transform 0.3s; // Transition effects
+
+      &:hover {
+        background-color: #1a155b; // Slightly lighter shade on hover
+        transform: scale(1.05); // Slightly larger on hover
+      }
+
+      &:active {
+        background-color: #0a0727; // Even darker shade on click
+        transform: scale(1); // Reset transform on click
+      }
+
+      &:focus {
+        outline: none; // No outline on focus
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2); // Focus ring
+      }
+    }
+  }
+}
