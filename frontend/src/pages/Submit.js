@@ -7,6 +7,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { MuiFileInput } from "mui-file-input";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   withAuthInfo,
@@ -15,6 +16,7 @@ import {
 } from "@propelauth/react";
 
 const Submit = withAuthInfo((props) => {
+  const navigate = useNavigate();
   const [competition, setCompetition] = useState("");
   const [file, setFile] = useState(null);
   const [image, setImage] = useState("");
@@ -22,12 +24,13 @@ const Submit = withAuthInfo((props) => {
   const [artworkName, setArtworkName] = useState("");
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
+  const [probability, setProbability] = useState(null);
 
   const handleFileUpload = (newFile) => {
     setFile(newFile);
     if (newFile) {
       const imageUrl = URL.createObjectURL(newFile);
-      console.log("imageUrl", imageUrl)
+      console.log("imageUrl", imageUrl);
       setImage(imageUrl);
     } else {
       setImage(null);
@@ -51,25 +54,74 @@ const Submit = withAuthInfo((props) => {
   };
 
   const handleSubmit = async () => {
-    console.log(competition)
+    console.log(competition);
     const fileString = JSON.stringify(file);
-    console.log("file", file)
-    console.log("fileString", fileString)
-    console.log(typeof image)
+    console.log("file", file);
+    console.log("fileString", fileString);
+    console.log(typeof image);
+
+    // Sightengine API integration
+    if (file) {
+      const formData = new FormData();
+      formData.append("media", file);
+      formData.append("models", "genai");
+      formData.append("api_user", "794355209");
+      formData.append(
+        "api_secret",
+        process.env.REACT_APP_SIGHTENGINE_API_SECRET
+      );
+
+      try {
+        const response = await axios.post(
+          "https://api.sightengine.com/1.0/check.json",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(response.data);
+        const probability = response.data.type.ai_generated;
+        setProbability(probability);
+
+        if (probability > 0.5) {
+          alert(
+            `It looks like your image is ${
+              probability * 100
+            }% AI generated. We have submitted your image for manual admin approval.`
+          );
+          navigate("/home");
+          return; // Skip the backend submission
+        } else {
+          await submitToBackend();
+          navigate("/home");
+        }
+      } catch (error) {
+        if (error.response) console.log(error.response.data);
+        else console.log(error.message);
+      }
+    }
+  };
+
+  const submitToBackend = async () => {
     const formData = {
-      "name": username,
-      posts: {set: [
-        {
-          "artwork": artworkName,
-          "description": description,
-          "competition": competition,
-          "image": image
-        },
-      ]},
+      name: username,
+      posts: {
+        set: [
+          {
+            artwork: artworkName,
+            description: description,
+            competition: competition,
+            image: image,
+          },
+        ],
+      },
     };
 
     let userID = "";
-    let userImage = ""
+    let userImage = "";
+
     const fetchData = async () => {
       try {
         // Make the GET request
@@ -95,9 +147,9 @@ const Submit = withAuthInfo((props) => {
         const result = await response.json();
         // Set the fetched data to the state
         console.log(result);
-        console.log(result.data[0].posts[0].image)
-        setUserImage(result.data[0].posts[0].image)
-        userImage = result.data[0].posts[0].image
+        console.log(result.data[0].posts[0].image);
+        setUserImage(result.data[0].posts[0].image);
+        userImage = result.data[0].posts[0].image;
         userID = result.data[0].id;
       } catch (error) {
         // Set the error to the state
@@ -107,7 +159,6 @@ const Submit = withAuthInfo((props) => {
     await fetchData();
     const patchData = async () => {
       try {
-        // Make the GET request
         const response = await fetch(
           `https://us-east-2.aws.neurelo.com/rest/users/${userID}`,
           {
@@ -119,17 +170,9 @@ const Submit = withAuthInfo((props) => {
             body: JSON.stringify(formData),
           }
         );
-        // Check if the response is ok (status code 200-299)
-        // if (!response.ok) {
-        //   console.log(response);
-        //   throw new Error("Network response was not ok");
-        // }
-        // Parse the JSON from the response
         const result = await response.json();
-        // Set the fetched data to the state
         console.log(result);
       } catch (error) {
-        // Set the error to the state
         console.log(error.message);
       }
     };
@@ -200,14 +243,14 @@ const Submit = withAuthInfo((props) => {
           }}
           getInputText={(value) => (value ? "Thanks!" : "")}
         />
-        {image && <img src={image} alt="Art" className="post__art-image" />}
+        {/* {image && <img src={image} alt="Art" className="post__art-image" />} */}
         <button className="submit_button" onClick={handleSubmit}>
           Submit
         </button>
       </div>
-      {userImage && (
+      {/* {userImage && (
         <img src={userImage} alt="Art" className="post__art-image" />
-      )}
+      )} */}
     </div>
   );
 });

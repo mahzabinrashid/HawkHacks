@@ -22,6 +22,13 @@ const Navbar = withAuthInfo((props) => {
           <li className="navbar__item">
             <a href="/portfolio">Portfolio</a>
           </li>
+
+          <li className="navbar__item">
+            <a href="/leaderboard">Leaderboard</a>
+          </li>
+          <li className="navbar__item">
+            <a href="/apply">Apply</a>
+          </li>
           <li className="navbar__item">
             <a href="/submit">Submit</a>
           </li>
@@ -30,9 +37,9 @@ const Navbar = withAuthInfo((props) => {
           </li>
         </ul>
         <div className="profile">
-          <div className="profile_pic">
+          {/* <div className="profile_pic">
             <img src={profileImage} alt="Profile" />
-          </div>
+          </div> */}
         </div>
       </nav>
     );

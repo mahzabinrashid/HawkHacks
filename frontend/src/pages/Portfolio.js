@@ -5,15 +5,24 @@ import {
   useRedirectFunctions,
   useLogoutFunction,
 } from "@propelauth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Portfolio = withAuthInfo((props) => {
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    // Define the async function for fetching data
     const fetchData = async () => {
       try {
-        // Make the GET request
+        if (!props.user || !props.user.email) {
+          setError("User email is missing");
+          console.error("User email is missing");
+          return;
+        }
+
         const filter = JSON.stringify({ email: props.user.email });
+        console.log("Fetching data with filter:", filter);
+
         const response = await fetch(
           `https://us-east-2.aws.neurelo.com/rest/users?filter=${encodeURIComponent(
             filter
@@ -26,26 +35,48 @@ const Portfolio = withAuthInfo((props) => {
             },
           }
         );
+
+        if (!response.ok) {
+          console.error("Network response was not ok", response);
+          throw new Error("Network response was not ok");
+        }
+
         const result = await response.json();
-        // Set the fetched data to the state
-        console.log(result)
+        console.log("Fetched data:", result);
+
+        if (result && result.data && result.data.length > 0) {
+          setUserData(result.data[0]);
+        } else {
+          setError("No user data found");
+          console.error("No user data found in response:", result);
+        }
       } catch (error) {
-        // Set the error to the state
-        console.log(error.message);
+        setError(error.message);
+        console.error("Error fetching data:", error);
       }
     };
 
-    // Call the fetch function
     fetchData();
-  }, []);
+  }, [props.user]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>
-      <UserProfile />
-      <Post portfolio={true}/>
-      <Post portfolio={true}/>
+      {userData ? (
+        <>
+          <UserProfile user={userData} />
+          {userData.posts.map((post, index) => (
+            <Post key={index} portfolio={true} post={userData} />
+          ))}
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
   );
-})
+});
 
 export default Portfolio;

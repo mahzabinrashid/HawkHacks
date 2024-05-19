@@ -4,48 +4,44 @@ import {
   useRedirectFunctions,
   useLogoutFunction,
 } from "@propelauth/react";
-
 import Post from "../components/home/Post";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 const Home = withAuthInfo((props) => {
-    useEffect(() => {
-      // Define the async function for fetching data
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            "https://us-east-2.aws.neurelo.com/rest/users",
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
-              },
-            }
-          );
-          // Check if the response is ok (status code 200-299)
-          if (!response.ok) {
-            console.log(response);
-            throw new Error("Network response was not ok");
-          }
-          // Parse the JSON from the response
-          const result = await response.json();
-          // Set the fetched data to the state
-          console.log(result);
-        } catch (error) {
-          // Set the error to the state
-          console.log(error.message);
-        }
-      };
+  const [posts, setPosts] = useState([]);
 
-      // Call the fetch function
-      fetchData();
-    }, []);
-
-  console.log(props.user);
-  if (props.user != null) {
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        // Make the GET request
+        const response = await fetch(
+          "https://us-east-2.aws.neurelo.com/rest/users",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          console.log(response);
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        console.log(result);
+        setPosts(result.data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchData();
+  }, []);
+
+  console.log(props.user);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         const filter = JSON.stringify({ email: props.user.email });
         const response = await fetch(
           `https://us-east-2.aws.neurelo.com/rest/users?filter=${encodeURIComponent(
@@ -60,10 +56,9 @@ const Home = withAuthInfo((props) => {
           }
         );
         const result = await response.json();
-        // Set the fetched data to the state
         if (result.data.length === 0) {
           const data = {
-            "email": props.user.email,
+            email: props.user.email,
           };
           const response = await fetch(
             "https://us-east-2.aws.neurelo.com/rest/users/__one",
@@ -79,18 +74,20 @@ const Home = withAuthInfo((props) => {
           console.log(response);
         }
       } catch (error) {
-        // Set the error to the state
         console.log(error.message);
       }
     };
-    fetchData();
-  }
+
+    if (props.user != null) {
+      fetchData();
+    }
+  }, [props.user]);
 
   return (
     <div className="home">
-      <Post portfolio={false} />
-      <Post portfolio={false} />
-      <Post portfolio={false} />
+      {posts.map((post, index) => (
+        <Post key={index} portfolio={false} post={post} />
+      ))}
     </div>
   );
 });

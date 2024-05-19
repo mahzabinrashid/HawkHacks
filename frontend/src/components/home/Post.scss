@@ -67,6 +67,8 @@
   &__art-image {
     width: 100%;
     border-radius: 10px;
+    max-width: 1000;
+    max-height: 500px;
   }
 
   &__footer {

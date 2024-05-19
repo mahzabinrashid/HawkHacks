@@ -2,13 +2,14 @@ import React from "react";
 import "./UserProfile.scss";
 import profileImage from "../../assets/images/profile_pic.jpg";
 
-const UserProfile = () => {
+const UserProfile = ({ user }) => {
+  console.log(user);
   return (
     <div className="user-profile">
       <img src={profileImage} alt="Profile" className="user-profile__image" />
       <div className="user-profile__info">
-        <h2 className="profile-name">Mahzabin Rashid Fariha</h2>
-        <p className="user-profile-handle">@fabledfariha</p>
+        <h2 className="profile-name">{user.name}</h2>
+        {/* <p className="user-profile-handle">@fabledfariha</p> */}
       </div>
       <div className="stats">
         <div className="stat">

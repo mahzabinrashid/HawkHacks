@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import "./Post.scss";
 import profileImage from "../../assets/images/profile_pic.jpg";
-import artImage from "../../assets/images/art.png";
 import upvote from "../../assets/icons/upvote.svg";
 import downvote from "../../assets/icons/downvote.svg";
 
-const Post = ({ portfolio }) => {
+const Post = ({ portfolio, post }) => {
   let [follow, setFollow] = useState(false);
   let [followText, setFollowText] = useState("Follow");
   const handleFollow = () => {
@@ -30,8 +29,8 @@ const Post = ({ portfolio }) => {
             className="post__profile-image"
           />
           <div className="user-info">
-            <span className="user-name">Mahzabin Rashid Fariha</span>
-            <span className="user-handle">@fabledfariha</span>
+            <span className="user-name">{post.name}</span>
+            <span className="user-handle">{post.posts[0].competition}</span>
           </div>
         </div>
         {!portfolio && (
@@ -47,16 +46,21 @@ const Post = ({ portfolio }) => {
           </button>
         )}
       </div>
-      <img src={artImage} alt="Art" className="post__art-image" />
+      <img
+        src={post.posts[0].image}
+        alt={post.posts[0].artwork}
+        className="post__art-image"
+      />
+
       <div className="post__footer">
-        <span className="post__art-title">The Picasso</span>
+        <span className="post__art-title">{post.posts[0].artwork}</span>
         <div className="post__actions">
           <div className="downvote-button" onClick={handleDownvote}>
-            <img src={downvote} />
+            <img src={downvote} alt="Downvote" />
           </div>
           <span className="likes">{like}</span>
           <div className="vote-buttons" onClick={handleUpvote}>
-            <img src={upvote} />
+            <img src={upvote} alt="Upvote" />
           </div>
         </div>
       </div>
