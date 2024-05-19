@@ -1,5 +1,6 @@
 import React from "react";
 import "./Leaderboard.scss";
+import Podium from "../components/leaderboard/Podium";
 
 const Leaderboard = () => {
   const data = [
@@ -49,6 +50,7 @@ const Leaderboard = () => {
 
   return (
     <div className="leaderboard">
+      <Podium />
       <div className="leaderboard-header">
         <span>Rank</span>
         <span>Username</span>
