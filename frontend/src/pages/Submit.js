@@ -8,11 +8,17 @@ import Select from "@mui/material/Select";
 import { MuiFileInput } from "mui-file-input";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import axios from "axios";
+import {
+  withAuthInfo,
+  useRedirectFunctions,
+  useLogoutFunction,
+} from "@propelauth/react";
 
-export default function Submit() {
+const Submit = withAuthInfo((props) => {
   const [competition, setCompetition] = useState("");
   const [file, setFile] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
+  const [userImage, setUserImage] = useState(null);
   const [artworkName, setArtworkName] = useState("");
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
@@ -21,6 +27,7 @@ export default function Submit() {
     setFile(newFile);
     if (newFile) {
       const imageUrl = URL.createObjectURL(newFile);
+      console.log("imageUrl", imageUrl)
       setImage(imageUrl);
     } else {
       setImage(null);
@@ -43,34 +50,97 @@ export default function Submit() {
     setUsername(event.target.value);
   };
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.append("media", file);
-    formData.append("models", "genai");
-    formData.append("api_user", "794355209");
-    formData.append("api_secret", process.env.REACT_APP_SIGHTENGINE_API_SECRET);
-
-    axios
-      .post("https://api.sightengine.com/1.0/check.json", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+  const handleSubmit = async () => {
+    console.log(competition)
+    const fileString = JSON.stringify(file);
+    console.log("file", file)
+    console.log("fileString", fileString)
+    console.log(typeof image)
+    const formData = {
+      "name": username,
+      posts: {set: [
+        {
+          "artwork": artworkName,
+          "description": description,
+          "competition": competition,
+          "image": image
         },
-      })
-      .then(function (response) {
-        // on success: handle response
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        if (error.response) console.log(error.response.data);
-        else console.log(error.message);
-      });
+      ]},
+    };
+
+    let userID = "";
+    let userImage = ""
+    const fetchData = async () => {
+      try {
+        // Make the GET request
+        const filter = JSON.stringify({ email: props.user.email });
+        const response = await fetch(
+          `https://us-east-2.aws.neurelo.com/rest/users?filter=${encodeURIComponent(
+            filter
+          )}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
+            },
+          }
+        );
+        // Check if the response is ok (status code 200-299)
+        if (!response.ok) {
+          console.log(response);
+          throw new Error("Network response was not ok");
+        }
+        // Parse the JSON from the response
+        const result = await response.json();
+        // Set the fetched data to the state
+        console.log(result);
+        console.log(result.data[0].posts[0].image)
+        setUserImage(result.data[0].posts[0].image)
+        userImage = result.data[0].posts[0].image
+        userID = result.data[0].id;
+      } catch (error) {
+        // Set the error to the state
+        console.log(error.message);
+      }
+    };
+    await fetchData();
+    const patchData = async () => {
+      try {
+        // Make the GET request
+        const response = await fetch(
+          `https://us-east-2.aws.neurelo.com/rest/users/${userID}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              "X-API-Key": `${process.env.REACT_APP_NEURELO_API_KEY}`,
+            },
+            body: JSON.stringify(formData),
+          }
+        );
+        // Check if the response is ok (status code 200-299)
+        // if (!response.ok) {
+        //   console.log(response);
+        //   throw new Error("Network response was not ok");
+        // }
+        // Parse the JSON from the response
+        const result = await response.json();
+        // Set the fetched data to the state
+        console.log(result);
+      } catch (error) {
+        // Set the error to the state
+        console.log(error.message);
+      }
+    };
+    await patchData();
   };
 
   return (
     <div className="submit">
       <div className="submit_box">
         <h1>Apply to Win Prizes and Opportunities!</h1>
+
         <TextField
           id="outlined-basic"
           label="Your name"
@@ -108,9 +178,11 @@ export default function Submit() {
             label="Competition"
             onChange={handleChange}
           >
-            <MenuItem value={10}>Neurelo Hackathon Submission</MenuItem>
-            <MenuItem value={20}>PreAuth</MenuItem>
-            <MenuItem value={30}>MLH</MenuItem>
+            <MenuItem value={"Neurelo Hackathon Submission"}>
+              Neurelo Hackathon Submission
+            </MenuItem>
+            <MenuItem value={"PreAuth"}>PreAuth</MenuItem>
+            <MenuItem value={"MLH"}>MLH</MenuItem>
           </Select>
         </FormControl>
         <MuiFileInput
@@ -133,6 +205,11 @@ export default function Submit() {
           Submit
         </button>
       </div>
+      {userImage && (
+        <img src={userImage} alt="Art" className="post__art-image" />
+      )}
     </div>
   );
-}
+});
+
+export default Submit;
