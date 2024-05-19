@@ -12,6 +12,9 @@ export default function Submit() {
   const [competition, setCompetition] = useState("");
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
+  const [artworkName, setArtworkName] = useState("");
+  const [username, setUsername] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleFileUpload = (newFile) => {
     setFile(newFile);
@@ -27,10 +30,42 @@ export default function Submit() {
     setCompetition(event.target.value);
   };
 
+  const handleNameChange = (event) => {
+    setArtworkName(event.target.value);
+  };
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    const formData = {
+      username,
+      artworkName,
+      description,
+      competition,
+      file,
+    };
+    console.log(formData);
+  };
+
   return (
     <div className="submit">
       <div className="submit_box">
         <h1>Apply and Win Prizes and Opportunities!</h1>
+        <TextField
+          id="outlined-basic"
+          label="Your name"
+          variant="outlined"
+          className="input"
+          fullWidth
+          value={username}
+          onChange={handleUsernameChange}
+        />
 
         <TextField
           id="outlined-basic"
@@ -38,6 +73,8 @@ export default function Submit() {
           variant="outlined"
           className="input"
           fullWidth
+          value={artworkName}
+          onChange={handleNameChange}
         />
         <TextField
           id="outlined-basic"
@@ -45,11 +82,13 @@ export default function Submit() {
           variant="outlined"
           className="input"
           fullWidth
+          value={description}
+          onChange={handleDescriptionChange}
         />
         <FormControl fullWidth className="input">
-          <InputLabel id="demo-simple-select-label">Competition</InputLabel>
+          <InputLabel id="competition-label">Competition</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
+            labelId="competition-label"
             id="demo-simple-select"
             value={competition}
             label="Competition"
@@ -76,6 +115,7 @@ export default function Submit() {
           getInputText={(value) => (value ? "Thanks!" : "")}
         />
         {image && <img src={image} alt="Art" className="post__art-image" />}
+        <button className="submit_button" onClick={handleSubmit}>Submit</button>
       </div>
     </div>
   );
