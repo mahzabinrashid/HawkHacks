@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Post.scss";
-import profileImage from "../../assets/images/profile_pic.jpg";
+import profileImage from "../../assets/images/profile_pic.png";
 import upvote from "../../assets/icons/upvote.svg";
 import downvote from "../../assets/icons/downvote.svg";
 

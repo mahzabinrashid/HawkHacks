@@ -95,7 +95,7 @@ const Submit = withAuthInfo((props) => {
               probability * 100
             }% AI generated. We have submitted your image for manual admin approval.`
           );
-          navigate("/home");
+          // navigate("/home");
           return; // Skip the backend submission
         } else {
           await submitToBackend();

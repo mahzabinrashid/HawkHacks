@@ -1,9 +1,8 @@
 import React from "react";
 import "./UserProfile.scss";
-import profileImage from "../../assets/images/profile_pic.jpg";
+import profileImage from "../../assets/images/profile_pic.png";
 
 const UserProfile = ({ user }) => {
-  console.log(user);
   return (
     <div className="user-profile">
       <img src={profileImage} alt="Profile" className="user-profile__image" />
@@ -13,7 +12,7 @@ const UserProfile = ({ user }) => {
       </div>
       <div className="stats">
         <div className="stat">
-          <span className="stat-number">53</span>
+          <span className="stat-number">{user.posts.length}</span>
           <span className="stat-label">Posts</span>
         </div>
         <div className="stat">

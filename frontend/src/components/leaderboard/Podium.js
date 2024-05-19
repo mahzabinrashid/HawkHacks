@@ -1,6 +1,6 @@
 import React from "react";
 import "./Podium.scss";
-import profileImage from "../../assets/images/profile_pic.jpg";
+import profileImage from "../../assets/images/profile_pic.png";
 
 const Podium = ({ topThree }) => {
   const defaultData = topThree.map((item, index) => ({

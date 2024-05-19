@@ -1,6 +1,6 @@
 import React from "react";
 import "./Navbar.scss";
-import profileImage from "../../assets/images/profile_pic.jpg";
+import profileImage from "../../assets/images/profile_pic.png";
 import {
   withAuthInfo,
   useRedirectFunctions,
