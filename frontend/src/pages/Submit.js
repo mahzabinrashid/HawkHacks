@@ -63,6 +63,7 @@ export default function Submit() {
         <MuiFileInput
           className="input"
           fullWidth
+          label="Upload your artwork"
           value={file}
           onChange={handleFileUpload}
           InputProps={{
